@@ -15,8 +15,8 @@ class TextNode():
         self.url = url
 
     def __eq__(self, other):
-        for key, val in self:
-            if not val == other[key]:
+        for key, val in self.__dict__.items():
+            if not val == other.__dict__[key]:
                 return False
         return True
     
