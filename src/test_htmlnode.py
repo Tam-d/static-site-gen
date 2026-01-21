@@ -18,7 +18,7 @@ class TestHTMLNode(unittest.TestCase):
             list_item_nodes.append(list_item_node)
 
         html_node = HTMLNode(
-            "<ul>", 
+            "ul", 
             "this is an unordered list", 
             list_item_nodes,
             {"type": "circle"}
@@ -39,7 +39,7 @@ class TestHTMLNode(unittest.TestCase):
         self.assertEqual(empty_node.props, None)
 
     def test_repr(self):
-        html_node = HTMLNode("<h1>", "this is a heading")
+        html_node = HTMLNode("h1", "this is a heading")
         self.assertNotEqual(html_node.__repr__(), None)
 
 
