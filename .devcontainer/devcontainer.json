@@ -1,0 +1,15 @@
+{
+    "name": "static-site-gen",
+    
+    "build": {
+        "dockerfile": "../Dockerfile"
+    },
+    
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python"
+            ]
+        }
+    }
+}
