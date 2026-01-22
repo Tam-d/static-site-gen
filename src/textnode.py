@@ -9,6 +9,18 @@ class TextType(Enum):
     LINK = "link"
     IMAGE = "image"
 
+def match_delimiter(delimiter):
+    match(delimiter):
+
+        case "**":
+            return TextType.BOLD
+        case "_":
+            return TextType.ITALIC
+        case "`":
+            return TextType.CODE
+        case _:
+            raise Exception("Invalid delimiter provided")
+
 def text_node_to_html_node(text_node):
     match(text_node.text_type):
         case TextType.TEXT:
@@ -25,6 +37,28 @@ def text_node_to_html_node(text_node):
             return LeafNode("img", "", {"alt": f"{text_node.text}"})
         case _:
             raise Exception("Text node's type is not valid")
+        
+def split_nodes_delimiter(old_nodes, delimiter, text_type):
+    new_nodes = []
+
+    for old_node in old_nodes:
+        if text_type != TextType.TEXT:
+            new_nodes.append(old_node)
+        else:
+            split_list = old_node.text.split(delimiter, 2)
+
+            if len(split_list) != 3:
+                raise Exception("Unable to split, invalid Markdown syntax")
+            
+            new_nodes.extend(
+                [
+                    TextNode(split_list[0], TextType.TEXT),
+                    TextNode(split_list[1], match_delimiter(delimiter)),
+                    TextNode(split_list[2], TextType.TEXT),
+                ]               
+            )
+            
+    return new_nodes
 
 class TextNode():
     def __init__(self, text, text_type, url=None):
