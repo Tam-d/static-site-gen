@@ -24,12 +24,12 @@ class TestMarkdownParser(unittest.TestCase):
             TextType.TEXT
         )
         
-        new_nodes = split_nodes_delimiter([test_node], "**", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([test_node], "**", TextType.BOLD)
 
         for i in range(0, len(new_nodes)):
             self.assertEqual(new_nodes[i], result_nodes[i])
 
-    def test_split_nodes_delimiter_bold(self):
+    def test_split_nodes_delimiter_italic(self):
         result_node1 = TextNode("This is text with a ", TextType.TEXT)
         result_node2 = TextNode("italics", TextType.ITALIC)
         result_node3 = TextNode(" in the middle", TextType.TEXT)
@@ -40,7 +40,7 @@ class TestMarkdownParser(unittest.TestCase):
             TextType.TEXT
         )
         
-        new_nodes = split_nodes_delimiter([test_node], "_", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([test_node], "_", TextType.ITALIC)
 
         for i in range(0, len(new_nodes)):
             self.assertEqual(new_nodes[i], result_nodes[i])
@@ -53,7 +53,7 @@ class TestMarkdownParser(unittest.TestCase):
         
         test_node = TextNode("This is text with a `code block` word", TextType.TEXT)
         
-        new_nodes = split_nodes_delimiter([test_node], "`", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([test_node], "`", TextType.CODE)
 
         for i in range(0, len(new_nodes)):
             self.assertEqual(new_nodes[i], result_nodes[i])
@@ -102,9 +102,6 @@ class TestMarkdownParser(unittest.TestCase):
         new_nodes = split_nodes_image([test_node])
 
         for i in range(0, len(result_nodes)):
-
-            print(result_nodes[i])
-            print(new_nodes[i])
             self.assertEqual(result_nodes[i], new_nodes[i])
 
     def test_split_nodes_link(self):

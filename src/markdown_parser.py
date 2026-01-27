@@ -28,22 +28,19 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
 
     for old_node in old_nodes:
-        if text_type != TextType.TEXT:
+        if old_node.text_type != TextType.TEXT:
             new_nodes.append(old_node)
         else:
             split_list = old_node.text.split(delimiter, 2)
 
-            if len(split_list) != 3:
+            if len(split_list) % 2 == 0:
                 raise Exception("Unable to split, invalid Markdown syntax")
             
-            new_nodes.extend(
-                [
-                    TextNode(split_list[0], TextType.TEXT),
-                    TextNode(split_list[1], match_delimiter(delimiter)),
-                    TextNode(split_list[2], TextType.TEXT),
-                ]               
-            )
-            
+            for i in range(0, len(split_list)):
+                if i % 2 == 0:
+                    new_nodes.append(TextNode(split_list[i], TextType.TEXT))
+                else:
+                    new_nodes.append(TextNode(split_list[i], text_type))
     return new_nodes
 
 def split_nodes_image(old_nodes):
@@ -54,9 +51,6 @@ def split_nodes_image(old_nodes):
             new_nodes.append(old_node)
         else:
             image_tuples = extract_markdown_images(old_node.text)
-
-            print(f"Image tuples: {image_tuples}")
-
             extraction_data = []
 
             for img_alt, img_link in image_tuples:
