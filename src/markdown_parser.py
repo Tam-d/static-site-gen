@@ -1,8 +1,6 @@
 from textnode import TextType, TextNode
 import re
 
-#![image](https://i.imgur.com/zjjcJKZ.png)
-
 IMAGE_EXTRACT_REGEX= r"!\[([^\[\]]*)\]\(([^\(\)]*)\)"
 LINK_EXTRACT_REGEX = r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)"
 
