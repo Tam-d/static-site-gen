@@ -158,8 +158,6 @@ def markdown_to_blocks(markdown):
         if blocks[i] != "":
             markdown_blocks.append(blocks[i].strip())
 
-    print(markdown_blocks)
-
     return markdown_blocks
 
 

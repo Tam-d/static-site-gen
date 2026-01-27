@@ -146,8 +146,6 @@ class TestMarkdownParser(unittest.TestCase):
         new_nodes = text_to_textnodes(test_text)
 
         for i in range(0, len(result_nodes)):
-            print(result_nodes[i])
-            print(new_nodes[i])
             self.assertEqual(result_nodes[i], new_nodes[i])
 
     def test_markdown_to_blocks(self):
