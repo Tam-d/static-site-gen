@@ -1,8 +1,23 @@
 from textnode import TextType, TextNode
+from enum import Enum
 import re
 
 IMAGE_EXTRACT_REGEX= r"!\[([^\[\]]*)\]\(([^\(\)]*)\)"
 LINK_EXTRACT_REGEX = r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)"
+
+HEADING_BLOCK_REGEX = r"^(#{1,6})\s+(.+)$"
+CODE_BLOCK_REGEX = r"```\n[\s\S]*?```"
+QUOTE_BLOCK_REGEX = r"^(>[ ]?.+(\r?\n|$))+"
+UNORDERED_LIST_BLOCK_REGEX = r"^(-[ ][\s\S]*(\r?\n|$))+"
+ORDERED_LIST_BLOCK_REGEX = r"^(\d.[ ][\s\S]*(\r?\n|$))+"
+
+class BlockType(Enum):
+    PARAGRAPH = "paragraph"
+    HEADING = "heading"
+    CODE = "code"
+    QUOTE = "quote"
+    UNORDERED_LIST = "unordered_list"
+    ORDERED_LIST = "ordered_list"
 
 def match_delimiter(delimiter):
     match(delimiter):
@@ -159,6 +174,22 @@ def markdown_to_blocks(markdown):
             markdown_blocks.append(blocks[i].strip())
 
     return markdown_blocks
+
+def block_to_block_type(markdown_block):
+
+    block_regex_to_block_type = {
+        HEADING_BLOCK_REGEX : BlockType.HEADING,
+        CODE_BLOCK_REGEX : BlockType.CODE,
+        QUOTE_BLOCK_REGEX : BlockType.QUOTE,
+        UNORDERED_LIST_BLOCK_REGEX : BlockType.UNORDERED_LIST,
+        ORDERED_LIST_BLOCK_REGEX : BlockType.ORDERED_LIST
+    }
+
+    for regex, block_type in block_regex_to_block_type.items():
+        if re.fullmatch(regex, markdown_block):
+            return block_type
+        
+    return BlockType.PARAGRAPH
 
 
 

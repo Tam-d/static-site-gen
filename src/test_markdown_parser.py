@@ -4,6 +4,7 @@ from markdown_parser import match_delimiter, split_nodes_delimiter
 from markdown_parser import extract_markdown_images, extract_markdown_links
 from markdown_parser import split_nodes_image, split_nodes_link
 from markdown_parser import text_to_textnodes, markdown_to_blocks
+from markdown_parser import block_to_block_type, BlockType
 
 class TestMarkdownParser(unittest.TestCase):
     def test_match_delimiter(self):
@@ -167,6 +168,44 @@ This is the same paragraph on a new line
                 "- This is a list\n- with items",
             ],
         )
+
+    def test_block_to_block_type_paragraph(self):
+        paragraph = "this is just a paragraph"
+
+        self.assertEqual(BlockType.PARAGRAPH, block_to_block_type(paragraph))
+
+    def test_block_to_block_type_headings(self):
+        h1 = "# this is an h1"
+        h2 = "## this is an h2"
+        h3 = "### this is an h3"
+        h4 = "#### this is an h4"
+        h5 = "##### this is an h5"
+        h6 = "###### this is an h6"
+
+        md_headings = [h1, h2, h3, h4, h5, h6]
+
+        for md_block in md_headings:
+            self.assertEqual(BlockType.HEADING, block_to_block_type(md_block))
+
+    def test_block_to_block_type_code(self):
+        code_block = "```\nThis is a code block```"
+        self.assertEqual(BlockType.CODE, block_to_block_type(code_block))
+
+    def test_block_to_block_type_quote(self):
+        quote_block = ">this is a quote block\n> with multiple lines"
+        self.assertEqual(BlockType.QUOTE, block_to_block_type(quote_block))
+
+    def test_block_to_block_type_ul(self):
+        ul = "- ul list item 1\n" \
+            "- ul list item 2\n" \
+            "- ul list item 3\n"
+        self.assertEqual(BlockType.UNORDERED_LIST, block_to_block_type(ul))
+
+    def test_block_to_block_type_ol(self):
+        ol = "1. ol list item 1\n" \
+            "2. ol list item 2\n" \
+            "3. ol list item 3\n"
+        self.assertEqual(BlockType.ORDERED_LIST, block_to_block_type(ol))
 
 if __name__ == "__main__":
     unittest.main()
