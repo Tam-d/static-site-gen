@@ -3,7 +3,7 @@ from textnode import TextType, TextNode
 from markdown_parser import match_delimiter, split_nodes_delimiter
 from markdown_parser import extract_markdown_images, extract_markdown_links
 from markdown_parser import split_nodes_image, split_nodes_link
-from markdown_parser import text_to_textnodes
+from markdown_parser import text_to_textnodes, markdown_to_blocks
 
 class TestMarkdownParser(unittest.TestCase):
     def test_match_delimiter(self):
@@ -149,6 +149,26 @@ class TestMarkdownParser(unittest.TestCase):
             print(result_nodes[i])
             print(new_nodes[i])
             self.assertEqual(result_nodes[i], new_nodes[i])
+
+    def test_markdown_to_blocks(self):
+        md = """
+This is **bolded** paragraph
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+- This is a list
+- with items
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )
 
 if __name__ == "__main__":
     unittest.main()
