@@ -135,5 +135,23 @@ def process_split(extracted_text, extracted_link, text, text_type):
     
     return new_nodes
 
+def text_to_textnodes(text):
+    
+    text_node = TextNode(text, TextType.TEXT, None)
+
+    bold_nodes = split_nodes_delimiter([text_node], "**", TextType.BOLD)
+
+    italic_nodes = split_nodes_delimiter(bold_nodes, "_", TextType.ITALIC)
+
+    code_nodes = split_nodes_delimiter(italic_nodes, "`", TextType.CODE)
+
+    image_nodes = split_nodes_image(code_nodes)
+
+    link_nodes = split_nodes_link(image_nodes)
+
+    return link_nodes
+
+
+
 
 
