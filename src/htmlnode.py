@@ -49,11 +49,6 @@ class ParentNode(HTMLNode):
         if not self.children or len(self.children) == 0:
             raise ValueError
         
-        #if the node is a leaf, return its html,
-        if self.value:
-            return self.to_html()
-        #if node is a parent recurse its children 
-        
         children_html = ""
 
         for childNode in self.children:
