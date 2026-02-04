@@ -32,13 +32,18 @@ def heading_to_html_node(md_block):
     return ParentNode(f"h{heading_value}", child_html_nodes, None)
 
 def code_to_html_node(md_block):
-    child_html_nodes = [
-        text_node_to_html_node(
-            TextNode(md_block.split('```', 2)[1], TextType.TEXT, None)
-        )
-    ]
+    split_block = md_block.split('```', 2)
+    
+    if len(split_block) != 3:
+        raise ValueError("Invalid code block")
 
-    code_html_node = ParentNode("code", child_html_nodes, None)
+    block_text = split_block[1].lstrip()
+
+    child_html_nodes = text_node_to_html_node(
+            TextNode(block_text, TextType.TEXT, None)
+    )
+
+    code_html_node = ParentNode("code", [child_html_nodes], None)
 
     return ParentNode("pre", [code_html_node], None)
 
