@@ -32,11 +32,13 @@ def heading_to_html_node(md_block):
 def code_to_html_node(md_block):
     child_html_nodes = [
         text_node_to_html_node(
-            TextNode(md_block.split('`', 2)[1], TextType.CODE, None)
+            TextNode(md_block.split('```', 2)[1], TextType.TEXT, None)
         )
     ]
 
-    return ParentNode("pre", child_html_nodes, None)
+    code_html_node = ParentNode("code", child_html_nodes, None)
+
+    return ParentNode("pre", [code_html_node], None)
 
 def quote_to_html_node(md_block):
     child_html_nodes = [text_to_children_html_nodes(md_block)]

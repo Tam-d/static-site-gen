@@ -39,7 +39,7 @@ class TestMarkdownToHtml(unittest.TestCase):
             )
 
     def test_basic_code_to_html_node(self):
-        test_code_block = "`this is some test code`"
+        test_code_block = "```this is some test code```"
         result = code_to_html_node(test_code_block)
         self.assertEqual(
             "<pre><code>this is some test code</code></pre>",
