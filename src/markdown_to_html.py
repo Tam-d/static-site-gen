@@ -67,8 +67,15 @@ def ul_to_html_node(md_block):
     return ParentNode("ul", list_item_nodes, None)
 
 def ol_to_html_node(md_block):
-    child_html_nodes = [text_to_children_html_nodes(md_block)]
-    return ParentNode("ol", child_html_nodes, None)
+    list_items = md_block.split("\n")
+    list_item_nodes = []
+    for li in list_items:
+        if li != "":
+            item_text = li.split(". ")[1]
+            item_child_nodes = text_to_children_html_nodes(item_text)
+            list_item_nodes.append(ParentNode("li", item_child_nodes, None))
+    
+    return ParentNode("ol", list_item_nodes, None)
 
 def block_to_html_node(md_block):
 

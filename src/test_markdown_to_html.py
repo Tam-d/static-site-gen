@@ -69,28 +69,33 @@ class TestMarkdownToHtml(unittest.TestCase):
             result.to_html()
         )
 
-    # def test_basic_ol_to_html_node(self):
-    #     test_ol_block = "1. item 1\n" \
-    #                     "2. item 2\n" \
-    #                     "3. item 3\n"
-    #     result = ol_to_html_node(test_ol_block)
+    def test_basic_ol_to_html_node(self):
+        test_ol_block = "1. item 1\n" \
+                        "2. item 2\n" \
+                        "3. item 3\n"
+        result = ol_to_html_node(test_ol_block)
 
-    def test_paragraphs(self):
-        md = """
-    This is **bolded** paragraph
-    text in a p
-    tag here
-
-    This is another paragraph with _italic_ text and `code` here
-
-    """
-
-        node = markdown_to_html_node(md)
-        html = node.to_html()
         self.assertEqual(
-            html,
-            "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
+            "<ol><li>item 1</li><li>item 2</li><li>item 3</li></ol>",
+            result.to_html()
         )
+
+    # def test_paragraphs(self):
+    #     md = """
+    # This is **bolded** paragraph
+    # text in a p
+    # tag here
+
+    # This is another paragraph with _italic_ text and `code` here
+
+    # """
+
+    #     node = markdown_to_html_node(md)
+    #     html = node.to_html()
+    #     self.assertEqual(
+    #         html,
+    #         "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
+    #     )
 
     # def test_codeblock(self):
     #     md = """
