@@ -57,12 +57,17 @@ class TestMarkdownToHtml(unittest.TestCase):
             result.to_html()
         )
 
-    # def test_basic_ul_to_html_node(self):
-    #     test_ul_block = "- item 1\n" \
-    #                     "- item 2\n" \
-    #                     "- item 3\n"
+    def test_basic_ul_to_html_node(self):
+        test_ul_block = "- item 1\n" \
+                        "- item 2\n" \
+                        "- item 3\n"
         
-    #     result = ul_to_html_node(test_ul_block)
+        result = ul_to_html_node(test_ul_block)
+
+        self.assertEqual(
+            "<ul><li>item 1</li><li>item 2</li><li>item 3</li></ul>",
+            result.to_html()
+        )
 
     # def test_basic_ol_to_html_node(self):
     #     test_ol_block = "1. item 1\n" \
