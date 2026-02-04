@@ -19,7 +19,9 @@ def text_to_children_html_nodes(text):
     return child_html_nodes
 
 def paragraph_to_html_node(md_block):
-    child_html_nodes = text_to_children_html_nodes(md_block)
+    block_lines = md_block.split("\n")
+    joined_lines = " ".join(block_lines)
+    child_html_nodes = text_to_children_html_nodes(joined_lines)
     return ParentNode("p", child_html_nodes, None)
 
 def heading_to_html_node(md_block):
