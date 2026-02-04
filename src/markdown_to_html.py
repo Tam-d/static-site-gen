@@ -104,7 +104,8 @@ def markdown_to_html_node(markdown):
     html_nodes = []
 
     for md_block in markdown_blocks:
-        html_nodes.append(block_to_html_node(md_block))
+        html_node = block_to_html_node(md_block)
+        html_nodes.append(html_node)
     
     document_parent = ParentNode("div", html_nodes, None)
 
