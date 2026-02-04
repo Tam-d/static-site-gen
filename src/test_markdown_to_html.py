@@ -14,11 +14,10 @@ class TestMarkdownToHtml(unittest.TestCase):
     def test_basic_paragraph_to_html_node(self):
         test_md_block = "this is a paragraph"
         result = paragraph_to_html_node(test_md_block)
-        result_html = result.to_html()
 
         self.assertEqual(
             "<p>this is a paragraph</p>",
-            result_html
+            result.to_html()
         )
 
     def test_basic_heading_to_html_node(self):
