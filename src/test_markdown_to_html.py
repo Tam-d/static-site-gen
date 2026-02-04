@@ -46,16 +46,16 @@ class TestMarkdownToHtml(unittest.TestCase):
             result.to_html()
         )
 
-    # def test_basic_quote_to_html_node(self):
-    #     test_quote_block = "> this is a " \
-    #                        "> multiline quote of something" \
-    #                        "> very interesting"
+    def test_basic_quote_to_html_node(self):
+        test_quote_block = "> this is a \n" \
+                           ">multiline quote of something\n" \
+                           ">very interesting"
         
-    #     result = quote_to_html_node(test_quote_block)
-    #     self.assertEqual(
-    #         "<blockquote> this is a multiline quote of something very interesting</blockquote>",
-    #         result.to_html()
-    #     )
+        result = quote_to_html_node(test_quote_block)
+        self.assertEqual(
+            "<blockquote>this is a multiline quote of something very interesting</blockquote>",
+            result.to_html()
+        )
 
     # def test_basic_ul_to_html_node(self):
     #     test_ul_block = "- item 1\n" \

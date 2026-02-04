@@ -41,7 +41,18 @@ def code_to_html_node(md_block):
     return ParentNode("pre", [code_html_node], None)
 
 def quote_to_html_node(md_block):
-    child_html_nodes = [text_to_children_html_nodes(md_block)]
+    block_lines = md_block.split("\n")
+    parsed_lines = []
+
+    for line in block_lines:
+        if not line.startswith(">"):
+            raise ValueError("Not a valid quote line")
+        stripped_line = line.lstrip(">").strip()
+        parsed_lines.append(stripped_line) 
+
+    block_content = " ".join(parsed_lines)
+    child_html_nodes = text_to_children_html_nodes(block_content)
+
     return ParentNode("blockquote", child_html_nodes, None)
 
 def ul_to_html_node(md_block):
