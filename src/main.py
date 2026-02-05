@@ -2,6 +2,8 @@ import os
 import shutil
 from pathlib import Path
 
+from generate_page import generate_page
+
 def copy_files_to_dir(source, destination):
     print(f"Entering {source}")
     if os.path.isdir(source):
@@ -35,6 +37,7 @@ def copy_files_to_dir(source, destination):
                 
 
 def main():
+
     try:
         current_dir = os.getcwd()
         print(f"The current working directory is: {current_dir}")
@@ -55,8 +58,12 @@ def main():
         print(f"Copying files from {source} to {destination}")
 
         copy_files_to_dir(source, destination)
+
+        generate_page("./content/index.md", "./template.html", "./public/index.html")
     except Exception as e:
         print(e)
+
+    
         
 
 

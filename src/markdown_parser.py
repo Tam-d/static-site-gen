@@ -4,10 +4,11 @@ import re
 
 IMAGE_EXTRACT_REGEX= r"!\[([^\[\]]*)\]\(([^\(\)]*)\)"
 LINK_EXTRACT_REGEX = r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)"
+H1_EXTRACT_REGEX = r"^# (.+)\n"
 
 HEADING_BLOCK_REGEX = r"^(#{1,6})\s+(.+)$"
 CODE_BLOCK_REGEX = r"```\n[\s\S]*?```"
-QUOTE_BLOCK_REGEX = r"^(>[ ]?.+(\r?\n|$))+"
+QUOTE_BLOCK_REGEX = "^(>[ ]?(.+)?(\r?|\n?))+"
 UNORDERED_LIST_BLOCK_REGEX = r"^(-[ ][\s\S]*(\r?\n|$))+"
 ORDERED_LIST_BLOCK_REGEX = r"^(\d.[ ][\s\S]*(\r?\n|$))+"
 
@@ -36,6 +37,13 @@ def extract_markdown_images(text):
 
 def extract_markdown_links(text):
     return re.findall(LINK_EXTRACT_REGEX, text)
+
+def extract_title(markdown):
+    h1_headings = re.findall(H1_EXTRACT_REGEX, markdown)
+
+    if not h1_headings or len(h1_headings) == 0:
+        raise Exception("No heading found in document")
+    return h1_headings[0]
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
@@ -165,13 +173,12 @@ def text_to_textnodes(text):
     return link_nodes
 
 def markdown_to_blocks(markdown):
-    markdown_blocks = []
-    
-    blocks = markdown.split("\n\n")
+    split_blocks = markdown.split("\n\n")
 
-    for i in range(0, len(blocks)):
-        if blocks[i] != "":
-            markdown_blocks.append(blocks[i].strip())
+    markdown_blocks = []
+    for i in range(0, len(split_blocks)):
+        if split_blocks[i] != "":
+            markdown_blocks.append(split_blocks[i].strip())
 
     return markdown_blocks
 
