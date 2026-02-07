@@ -24,15 +24,13 @@ def get_markdown_content(markdown_path):
     return get_file_content(markdown_path)
 
 def generate_html(template, title, html, base_path):
-    html_links = html.replace(f"href=\"/", f"href=\"{base_path}")
-    html_images = html_links.replace(f"src=\"/", f"src=\"{base_path}")
-
-    html = html_images
-
     titled_template = template.replace("{{ Title }}", title)
     content = titled_template.replace("{{ Content }}", html)
 
-    return content
+    html_links = content.replace(f"href=\"/", f"href=\"{base_path}")
+    html_images = html_links.replace(f"src=\"/", f"src=\"{base_path}")
+
+    return html_images
 
 def write_to_file(content, destination):
     dest_path = Path(destination)
