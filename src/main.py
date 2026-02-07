@@ -1,8 +1,9 @@
+import sys
 import os
 import shutil
 from pathlib import Path
 
-from generate_page import generate_page
+from generate_page import generate_page, generate_pages_recursive
 
 def copy_files_to_dir(source, destination):
     print(f"Entering {source}")
@@ -37,29 +38,36 @@ def copy_files_to_dir(source, destination):
                 
 
 def main():
+    base_path = "/"
+
+    if len(sys.argv) > 1:
+        base_path = sys.argv[1]
+        print(f"Received a base path arg: {base_path}")
 
     try:
         current_dir = os.getcwd()
         print(f"The current working directory is: {current_dir}")
         source = os.path.join(current_dir, "static")
-        destination = os.path.join(current_dir, "public")
+        print(f"The source directory is: {source}")
+        destination = os.path.join(current_dir, "docs")
+        print(f"The destination directory is: {destination}")
 
         if not os.path.isdir(source):
             raise Exception("The source path does not exist")
         
-        print(f"Deleting all contents of {destination}")
         
         if os.path.exists(destination):
+            print(f"Deleting all contents of {destination}")
             shutil.rmtree(os.path.join(destination))
     
         if not os.path.exists(destination):
-            os.mkdir(destination)
+            os.makedirs(destination)
 
         print(f"Copying files from {source} to {destination}")
 
         copy_files_to_dir(source, destination)
 
-        generate_page("./content/index.md", "./template.html", "./public/index.html")
+        generate_pages_recursive("./content", "./template.html", destination, base_path)
     except Exception as e:
         print(e)
 

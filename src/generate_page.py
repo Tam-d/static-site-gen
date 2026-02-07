@@ -23,9 +23,15 @@ def get_template_content(template_path):
 def get_markdown_content(markdown_path):
     return get_file_content(markdown_path)
 
-def generate_html(template, title, html):
-    titled = template.replace("{{ Title }}", title)
-    content = titled.replace("{{ Content }}", html)
+def generate_html(template, title, html, base_path):
+    html_links = html.replace(f"href=\"/", f"href=\"{base_path}")
+    html_images = html_links.replace(f"src=\"/", f"src=\"{base_path}")
+
+    html = html_images
+
+    titled_template = template.replace("{{ Title }}", title)
+    content = titled_template.replace("{{ Content }}", html)
+
     return content
 
 def write_to_file(content, destination):
@@ -56,20 +62,14 @@ def write_to_file(content, destination):
     except Exception as e:
         print(e)
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, base_path):
 
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     markdown_content = get_markdown_content(from_path)
     template_content = get_template_content(template_path)
 
-    # print(f"Markdown Content: \n {markdown_content}\n")
-    # print(f"Template Content: \n {template_content}\n")
-
-
     markdown_title = extract_title(markdown_content)
-
-    # print(f"Markdown Title: \n {markdown_title}\n")
 
     markdown_html_nodes = markdown_to_html_node(markdown_content)
     markdown_to_html = markdown_html_nodes.to_html()
@@ -77,12 +77,28 @@ def generate_page(from_path, template_path, dest_path):
     print(markdown_to_html)
 
     html_content = generate_html(
-        template_content, markdown_title, markdown_to_html
+        template_content, markdown_title, markdown_to_html, base_path
     )
 
     print(html_content)
 
     write_to_file(html_content, dest_path)
 
-    
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, base_path):
 
+    print(f"Checking {dir_path_content}")
+
+    content_path = Path(dir_path_content)
+
+    if Path.is_file(content_path):
+        #create the file in the dest dir
+        print(f"{content_path} is a file")
+        write_path = dest_dir_path.replace(".md", ".html")
+        generate_page(content_path, template_path, write_path, base_path)
+
+    if Path.is_dir(content_path):
+        print(f"{content_path} is a directory")
+        for child in Path.iterdir(content_path):
+            print(f"Child Path: {child}")
+            print(f"Child Name: {child.name}")
+            generate_pages_recursive(child, template_path, dest_dir_path + f"/{child.name}", base_path)
