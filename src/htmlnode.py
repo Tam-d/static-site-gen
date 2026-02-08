@@ -17,7 +17,7 @@ class HTMLNode():
         prop_strings = []
 
         for key, val in self.props.items():
-            prop_strings.append(f"{key}={val}")
+            prop_strings.append(f"{key}=\"{val}\"")
 
         return " " + " ".join(prop_strings)
     
